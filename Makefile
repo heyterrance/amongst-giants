@@ -2,7 +2,7 @@
 # Compilation and Linking
 #------------------------------------------------------------------------------
 
-CC=clang++
+CC=g++
 
 STDLIB=-std=c++11
 WARNINGS=-Wall -Wextra -Werror
