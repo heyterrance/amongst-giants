@@ -1,0 +1,20 @@
+# Everyone hates swaps
+*.swp
+
+# Results of compilation
+bin/
+obj/
+giants
+
+# Junk OS files
+*.DS_STORE
+
+# Unneeded eadmes and notes 
+NOTES
+README
+
+# Include this eventually
+tools/
+
+# Files for image editing
+share/images/pixens
