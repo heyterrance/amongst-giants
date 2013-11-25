@@ -1,0 +1,12 @@
+// Room 1
+// this is a comment
+// size 800 x 450
+//     -> 
+// | y x
+// v
+// type x y width height
+// block 200 70 200 8
+block 500 220 91 56
+block 400 390 90 50
+block 0 400 110 30
+block 0 430 200 20
