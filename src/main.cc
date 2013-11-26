@@ -11,7 +11,7 @@
 #include <SFML/Graphics.hpp> // sf::RenderWindow, sf::Color
 
 #include "constants.h"
-#include "state.h"
+#include "state.h" // StateManager
 #include "intro_state.h"
 #include "world_state.h"
 
@@ -58,9 +58,12 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
   sf::RenderWindow window(mode, "Amongst Giants", sf::Style::Close);
   window.setVerticalSyncEnabled(true);
 
-  // sf::Clock clock;
-  // int_fast16_t count = 0;
-  // float elapsed = 0.0f;
+#ifdef DEBUG
+  sf::Clock clock;
+  int_fast16_t count = 0;
+  float elapsed = 0.0f;
+#endif
+
   while ( (stat->isOpen = window.isOpen()) ) {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -77,8 +80,7 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
       continue;
     }
 
-    // Frames per Second
-    /*
+#ifdef DEBUG
     elapsed += clock.restart().asSeconds();
     if (++count >= 650) {
       printf("[Graphic] %'.4G FPS (%'d frames)\n",
@@ -86,7 +88,7 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
       count = 0;
       elapsed = 0.0f;
     }
-    // */
+#endif
 
     window.clear(sf::Color(250, 255, 250));
     manager->draw(window);
@@ -99,9 +101,11 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
   while (!stat->isOpen) { // Wait for window to open.
     clock.restart(); // needed for optimized compilation
   }
-  
-  // uint_fast64_t count = 0;
-  // float elapsed = 0.0f;
+
+#ifdef DEBUG
+  uint_fast64_t count = 0;
+  float elapsed = 0.0f;
+#endif
 
   while (stat->isOpen) {
     if (!stat->focused) {
@@ -109,8 +113,8 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
       continue;
     }
     const float dt = clock.restart().asSeconds();
-    // Iterations per Second
-    /*
+
+#ifdef DEBUG
     elapsed += dt;
     if (++count >= 2E6) {
       printf("[Logic]   %'.4G SPS (%'llu steps)\n",
@@ -118,7 +122,8 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
       count = 0llu;
       elapsed = 0.0f;
     }
-    // */
+#endif
+
     manager->update(dt);
   }
   manager->close();

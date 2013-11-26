@@ -6,6 +6,7 @@ CC=g++
 
 STDLIB=-std=c++11
 WARNINGS=-Wall -Wextra -Werror
+DBUG=-DDEBUG -g
 OPTLVL=-O4
 SFML=-lsfml-system -lsfml-graphics -lsfml-audio -lsfml-window
 
@@ -45,12 +46,18 @@ seperator := @printf "%0.s-" {1..80}; echo ''
 .PHONY: all
 all: $(TARGET)
 
+.PHONY: debug
+debug: CC += $(DBUG)
+debug: $(TALK)
+	@echo "Compiled with debug flags"
+debug: all
+
 $(TARGET): $(OBJ) $(SRC) $(INC) | $(BINDIR)
 	$(seperator)
 	@echo Linking objects
 	@$(CC) $(LFLAGS) $(OBJ) -o $@
 	$(seperator)
-	@echo "Executable: "$(TARGET)
+	@echo "Executable: $(TARGET)"
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cc
 	@echo Compiling $<
