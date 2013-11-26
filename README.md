@@ -5,7 +5,7 @@ my GitHub, and prove I know C++.
 
 ## Getting Started
 Assuming you have a __C++11__ compliant compiler and have installed the other
-dependencies, run `make && ./giants`.
+[dependencies](#dependencies), run `make && ./giants`.
 
 ## Dependencies
 _Amongst Giants_ requires the following libraries:
