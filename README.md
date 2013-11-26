@@ -10,7 +10,7 @@ Assuming you have a __C++11__ compliant compiler and have installed the other
 ## Dependencies
 _Amongst Giants_ requires the following libraries:
 
-* [__SFML 2.1__](http://www.sfml-dev.org/ "SFML") - Cross-platform multimedia
+* [__SFML 2.1__](http://www.sfml-dev.org/) - Cross-platform multimedia
 library
 
 ## License
