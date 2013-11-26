@@ -60,11 +60,9 @@ $(OBJ): | $(OBJDIR)
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
-	$(seperator)
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
-	$(seperator)
 	
 .PHONY: clean
 clean:
