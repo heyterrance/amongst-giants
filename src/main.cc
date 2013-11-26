@@ -84,7 +84,7 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
     elapsed += clock.restart().asSeconds();
     if (++count >= 650) {
       printf("[Graphic] %'.4G FPS (%'d frames)\n",
-             count*1.0f/elapsed, count);
+          static_cast<float>(count)/elapsed, count);
       count = 0;
       elapsed = 0.0f;
     }
@@ -118,7 +118,7 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
     elapsed += dt;
     if (++count >= 2E6) {
       printf("[Logic]   %'.4G SPS (%'llu steps)\n",
-             count*1.0f/elapsed, count);
+             static_cast<float>(count)/elapsed, count);
       count = 0llu;
       elapsed = 0.0f;
     }
