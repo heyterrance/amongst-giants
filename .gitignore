@@ -9,10 +9,10 @@ giants
 # Junk OS files
 *.DS_STORE
 
-# Unneeded eadmes and notes 
+# Unneeded notes
 NOTES
 
-# Include this eventually
+# TODO Include this eventually
 tools/
 
 # Files for image editing

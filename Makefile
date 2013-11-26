@@ -53,7 +53,6 @@ $(TARGET): $(OBJ) $(SRC) $(INC) | $(BINDIR)
 	@echo "Executable: "$(TARGET)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cc
-# @echo $(CC) $(CFLAGS) -c $<
 	@echo Compiling $<
 	@$(CC) $(CFLAGS) -c $< -o $@
 
