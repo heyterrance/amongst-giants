@@ -68,7 +68,7 @@ void Room::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   
 void Room::load(const std::string& filename) {
   std::ifstream file(filename);
-  if (!file || filename.rfind(".room") == std::string::npos) {
+  if (!file or filename.rfind(".room") == std::string::npos) {
     fprintf(stderr, "error: no file %s\n", filename.c_str());
     return;
   }

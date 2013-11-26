@@ -39,7 +39,7 @@ void Jack::animate(float dt) {
     frame = (frame > 8) ? 0 : frame + 1;
   }
 
-  if (in_air || dx == 0.0f) {
+  if (in_air or dx == 0.0f) {
     frame = 0;
     sprite_.setTextureRect(frames_[0]);
   } else  if (dx > 0.0f) {

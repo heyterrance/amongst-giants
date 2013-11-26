@@ -10,10 +10,10 @@
 #include <SFML/Window.hpp> // sf::Event
 #include <SFML/Graphics.hpp> // sf::RenderWindow, sf::Color
 
-#include "constants.h"
+#include "constants.h" // WIN_WIDTH, WIN_HEIGHT
 #include "state.h" // StateManager
-#include "intro_state.h"
-#include "world_state.h"
+#include "intro_state.h" // IntroState
+#include "world_state.h" // WorldState
 
 typedef struct _window_status {
   bool isOpen;
@@ -32,28 +32,35 @@ int main(int, char** argv) {
   printf("======================================");
   printf("======================================\n\n");
 
+  // Get path to executable 
   std::string exec_path(argv[0]);
   exec_path = exec_path.substr(0, exec_path.find_last_of('/') + 1);
-
+  
+  // Use absolute path for resources
   FontManager::setPath(exec_path);
   TextureManager::setPath(exec_path);
   RoomManager::setPath(exec_path);
 
+  // Variables shared between threads
   WindowStatus stat(false, true);
   StateManager manager;
-  // Skip intro for testing
+
+#ifndef DEBUG
   manager.push(new IntroState());
-  // manager.push(std::shared_ptr<GameState>(new WorldState()));
+#else
+  manager.push(new WorldState());
+#endif
 
   std::thread logicThread(runLogic, &stat, &manager);
   runGraphics(&stat, &manager);
   logicThread.join();
+
   return 0;
 }
 
 
 void runGraphics(WindowStatus* stat, const StateManager* manager) {
-  // Setup window.
+  // Setup window
   const sf::VideoMode mode(WIN_WIDTH, WIN_HEIGHT, 8);
   sf::RenderWindow window(mode, "Amongst Giants", sf::Style::Close);
   window.setVerticalSyncEnabled(true);
@@ -75,8 +82,10 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
       }
     }
 
-    if (!stat->focused) {
-      // clock.restart();
+    if (not stat->focused) {
+#ifdef DEBUG
+      clock.restart();
+#endif
       continue;
     }
 
@@ -98,9 +107,11 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
 
 void runLogic(const WindowStatus* stat, StateManager* manager) {
   sf::Clock clock;
-  while (!stat->isOpen) { // Wait for window to open.
-    clock.restart(); // needed for optimized compilation
-  }
+
+  // Wait for window to open
+  // clock.restart() needed for optimized compilation
+  while (not stat->isOpen)
+    clock.restart();
 
 #ifdef DEBUG
   uint_fast64_t count = 0;
@@ -108,7 +119,7 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
 #endif
 
   while (stat->isOpen) {
-    if (!stat->focused) {
+    if (not stat->focused) {
       clock.restart();
       continue;
     }
