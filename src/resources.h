@@ -56,7 +56,6 @@ private:
 };
 
 
-// TODO Implement RoomManager for *.room files
 // RoomManager
 class RoomManager {
 public:
