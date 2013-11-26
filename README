@@ -1,4 +1,3 @@
-## Amongst Giants ##
 _Amongst Giants_ is a game that might be fun or creative in some way. It was
 started as a way to become more familiar with game development and design, pad
 my GitHub, and prove I know C++.
@@ -10,7 +9,7 @@ dependencies, run `make && ./giants`.
 ## Dependencies ##
 _Amongst Giants_ requires the following libraries:
 
-* [__SFML 2.1__](http://www.sfml-dev.org/) - Cross-platform multimedia
+* [SFML 2.1](http://www.sfml-dev.org/) - Cross-platform multimedia
 library
 
 ## License ##
