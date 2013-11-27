@@ -38,9 +38,12 @@ StateManager* GameState::manager() const {
 // =============================================================================
 // StateManager
 // =============================================================================
+  
+StateManager::StateManager() : state_(nullptr), keep_state_(true) { }
 
 StateManager::~StateManager() {
 	while (state_) {
+		state_->save();
 		delete state_;
 		states_.pop();
 		state_ = states_.empty() ? nullptr : states_.top();
@@ -87,13 +90,4 @@ void StateManager::deleteState() {
   if (state_) delete state_;
   keep_state_ = true;
   state_ = nullptr;
-}
-
-void StateManager::close() {
-	while (state_) {
-		state_->save();
-		delete state_;
-		states_.pop();
-		state_ = states_.empty() ? nullptr : states_.top();
-	}
 }

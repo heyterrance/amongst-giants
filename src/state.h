@@ -19,7 +19,6 @@ class StateManager;
 class GameState {
 public:
   GameState();
-
   virtual ~GameState();
 
   // update(dt)
@@ -35,14 +34,23 @@ public:
   // Save necessary information
   virtual void save() = 0;
 
+  // manager(), setManager(manager)
   // Get and set StateManager
-  void setManager(StateManager* manager);
   StateManager* manager() const;
+  void setManager(StateManager* manager);
 
 protected:
+  // push(state)
+  // Push a new state on the StaeManager stack
   void push(GameState* state) const;
-  void replaceWith(GameState* state) const;
+
+  // pop()
+  // Pop current state (this) from the StateManager stack
   void pop() const;
+
+  // replaceWith(state)
+  // Pop current state (this) and push new state
+  void replaceWith(GameState* state) const;
 
 private:
   StateManager* manager_;
@@ -50,17 +58,33 @@ private:
 
 class StateManager {
 public:
-  StateManager() : state_(nullptr), keep_state_(true) {}
+  StateManager();
   ~StateManager();
 
+  // push(state)
+  // Push state onto stack and sets its manager
   void push(GameState* state);
-  void replaceWith(GameState* state);
+  
+  // pop()
+  // Pop a state from stack
   void pop();
+
+  // replaceWith(state)
+  // Calls pop() then push(state)
+  void replaceWith(GameState* state);
+  
+  // deleteState()
+  // Deletes the state on top of the stack in the case of pop() and
+  // replaceWith(...)
   void deleteState();
 
+  // update(dt)
+  // Process next frame of logic
   void update(float dt);
+
+  // draw(window)
+  // Draw top state to window
   void draw(sf::RenderWindow& window) const;
-  void close();
 
 private:
   std::stack< GameState* > states_;

@@ -137,5 +137,4 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
 
     manager->update(dt);
   }
-  manager->close();
 }
