@@ -21,8 +21,8 @@ typedef struct _window_status {
   _window_status(bool open, bool focused) : isOpen(open), focused(focused) { }
 } WindowStatus;
 
-void runLogic(const WindowStatus* stat, StateManager* manager);
-void runGraphics(WindowStatus* stat, const StateManager* manager);
+void runLogic(const WindowStatus& stat, StateManager& manager);
+void runGraphics(WindowStatus& stat, const StateManager& manager);
 
 int main(int, char** argv) {
   setlocale(LC_NUMERIC, "");
@@ -51,15 +51,15 @@ int main(int, char** argv) {
   manager.push(new WorldState());
 #endif
 
-  std::thread logicThread(runLogic, &stat, &manager);
-  runGraphics(&stat, &manager);
+  std::thread logicThread(runLogic, std::ref(stat), std::ref(manager));
+  runGraphics(stat, manager);
   logicThread.join();
 
   return 0;
 }
 
 
-void runGraphics(WindowStatus* stat, const StateManager* manager) {
+void runGraphics(WindowStatus& stat, const StateManager& manager) {
   // Setup window
   const sf::VideoMode mode(WIN_WIDTH, WIN_HEIGHT, 8);
   sf::RenderWindow window(mode, "Amongst Giants", sf::Style::Close);
@@ -71,23 +71,27 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
   float elapsed = 0.0f;
 #endif
 
-  while ( (stat->isOpen = window.isOpen()) ) {
+  while ( (stat.isOpen = window.isOpen()) ) {
     sf::Event event;
     while (window.pollEvent(event)) {
       switch (event.type) {
         case sf::Event::Closed: window.close(); break;
-        case sf::Event::LostFocus: stat->focused = false; break;
-        case sf::Event::GainedFocus: stat->focused = true; break;
+        case sf::Event::LostFocus: stat.focused = false; break;
+        case sf::Event::GainedFocus: stat.focused = true; break;
         default: break;
       }
     }
 
-    if (not stat->focused) {
+    if (not stat.focused) {
 #ifdef DEBUG
       clock.restart();
 #endif
       continue;
     }
+
+    window.clear(sf::Color(250, 255, 250));
+    manager.draw(window);
+    window.display();
 
 #ifdef DEBUG
     elapsed += clock.restart().asSeconds();
@@ -98,19 +102,17 @@ void runGraphics(WindowStatus* stat, const StateManager* manager) {
       elapsed = 0.0f;
     }
 #endif
-
-    window.clear(sf::Color(250, 255, 250));
-    manager->draw(window);
-    window.display();
   }
 }
 
-void runLogic(const WindowStatus* stat, StateManager* manager) {
+void runLogic(const WindowStatus& stat, StateManager& manager) {
   sf::Clock clock;
 
   // Wait for window to open
-  // clock.restart() needed for optimized compilation
-  while (not stat->isOpen)
+  // Reason for "clock.restart()": Optimized compilation skips over empty
+  //                               while loop
+  // TODO: Look for more intelligent workaround
+  while (not stat.isOpen)
     clock.restart();
 
 #ifdef DEBUG
@@ -118,12 +120,13 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
   float elapsed = 0.0f;
 #endif
 
-  while (stat->isOpen) {
-    if (not stat->focused) {
-      clock.restart();
-      continue;
-    }
+  while (stat.isOpen) {
     const float dt = clock.restart().asSeconds();
+
+    if (not stat.focused)
+      continue;
+
+    manager.update(dt);
 
 #ifdef DEBUG
     elapsed += dt;
@@ -134,7 +137,5 @@ void runLogic(const WindowStatus* stat, StateManager* manager) {
       elapsed = 0.0f;
     }
 #endif
-
-    manager->update(dt);
   }
 }
