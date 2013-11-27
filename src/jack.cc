@@ -6,12 +6,12 @@
 Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f),
                                ddx(0.0f), ddy(0.0f),
                                can_jump(false), in_air(true), 
-                               frame(0u), total_time(0.0f) {
+                               frame_(0u), time_(0.0f) {
   sprite_.setTexture( TextureManager::getTexture("jack-walk") );
   sprite_.setPosition(x, y);
   for (int i = 0; i < 6; ++i)
     frames_.push_back(sf::IntRect(12*i, 0, 12, 24));
-  sprite_.setTextureRect(frames_[frame]);
+  sprite_.setTextureRect(frames_[frame_]);
   bounds_.left = x;
   bounds_.top = y;
   bounds_.width = sprite_.getTextureRect().width;
@@ -33,17 +33,17 @@ void Jack::update(float dt) {
 
 void Jack::animate(float dt) {
   const float f_time = 1.0f/6.0f;
-  total_time += dt;
-  if (total_time > f_time) {
-    total_time = 0.0f;
-    frame = (frame > 8) ? 0 : frame + 1;
+  time_ += dt;
+  if (time_ > f_time) {
+    time_ = 0.0f;
+    frame_ = (frame_ > 8) ? 0 : frame_ + 1;
   }
 
   if (in_air or dx == 0.0f) {
-    frame = 0;
+    frame_ = 0;
     sprite_.setTextureRect(frames_[0]);
   } else  if (dx > 0.0f) {
-    switch (frame) {
+    switch (frame_) {
       case 0:         sprite_.setTextureRect(frames_[1]); break;
       case 1: case 7: sprite_.setTextureRect(frames_[2]); break;
       case 2: case 6: sprite_.setTextureRect(frames_[3]); break;
@@ -52,7 +52,7 @@ void Jack::animate(float dt) {
       default: break;
     }
   } else if (dx < 0.0f) {
-    switch (frame) {
+    switch (frame_) {
       case 0:         sprite_.setTextureRect(frames_[5]); break;
       case 1: case 7: sprite_.setTextureRect(frames_[4]); break;
       case 2: case 6: sprite_.setTextureRect(frames_[3]); break;
