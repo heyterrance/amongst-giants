@@ -79,7 +79,7 @@ void StateManager::update(float dt) {
 		dt = 0.0f;
 	}
 	if(state_) state_->update(dt);
-	else dbprintf(stderr, "Empty state stack!\n");
+	else dbprintf("Empty state stack!\n");
 }
 
 void StateManager::draw(sf::RenderWindow& window) const {

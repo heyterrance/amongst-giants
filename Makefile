@@ -48,8 +48,6 @@ all: $(TARGET)
 
 .PHONY: debug
 debug: CC += $(DBUG)
-debug: $(TALK)
-	@echo "Compiled with debug flags"
 debug: all
 
 $(TARGET): $(OBJ) $(SRC) $(INC) | $(BINDIR)
