@@ -16,21 +16,15 @@ std::string tolower(const std::string& str) {
 		ss << (char) std::tolower(c);
 	return ss.str();
 }
-	
-bool int3::operator<(const int3& a) const {
-	if (x == a.x) {
-		if (y == a.y)
-			return z < a.z;
-		return y < a.y;
-	}
-	return x < a.x;
-}
 
-bool float3::operator<(const float3& a) const {
-	if (x == a.x) {
-		if (y == a.y)
-			return z < a.z;
-		return y < a.y;
-	}
-	return x < a.x;
+void dbprintf(const char *fmt, ...) {
+#ifdef DEBUG
+  char buffer[256];
+  va_list args;
+  va_start (args, fmt);
+  vsprintf(buffer, fmt, args);
+  printf("%s", buffer);
+  va_end(args);
+#endif
+  if (fmt) return;
 }

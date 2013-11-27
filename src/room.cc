@@ -4,7 +4,7 @@
 #include "room.h"
 
 Room::Room(int i, int j) : x(i), y(j), index( getIndex(i, j) ) {
-  printf("Room() %d: (%d, %d)\n", index, x, y);
+  dbprintf("Room() %d: (%d, %d)\n", index, x, y);
   loadBlocks();
   load(RoomManager::getFile(index));
 }
@@ -31,7 +31,7 @@ std::pair<int, int> Room::getPos(int index) {
 
 int Room::next(int i, int j) const {
   const int nxt = getIndex(x + i, y + j);
-  printf("%d: (%d, %d) -> %d: (%d, %d)\n", index, x, y, nxt, x+i, y+j);
+  dbprintf("%d: (%d, %d) -> %d: (%d, %d)\n", index, x, y, nxt, x+i, y+j);
   return (nxt >= 0) ? nxt : index;
 }
 
@@ -100,5 +100,4 @@ void Room::load(const std::string& filename) {
 }
   
 void Room::save() const {
-  // printf("%s(%d): Saving Room [%d]...\n", __FILE__, __LINE__, index);
 }

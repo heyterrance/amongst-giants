@@ -8,7 +8,7 @@ WorldState::WorldState() : GameState(), jack_(300.0f, 30.0f),
   for (int i = 0; i < Room::kRoomsX; ++i)
     for (int j = 0; j < Room::kRoomsY; ++j) {
       rooms_.push_back(nullptr);
-      printf("%d: (%d, %d)\n", Room::getIndex(i, j), i, j);
+      dbprintf("%d: (%d, %d)\n", Room::getIndex(i, j), i, j);
     }
   loadRoom(room_idx_);
 }

@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics.hpp> // sf::Font
 
-#include "util.h" // tolower
+#include "util.h" // tolower, dbprintf
 
 // FontManager
 // Loads and stores fonts

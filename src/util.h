@@ -11,18 +11,8 @@
 std::string toupper(const std::string& str);
 std::string tolower(const std::string& str);
 
-struct int3 {
-	int x, y, z;
-	int3(int i, int j, int k) : x(i), y(j), z(k) { }
-
-	bool operator<(const int3& a) const;
-};
-
-struct float3 {
-	float x, y, z;
-	float3(float i, float j, float k) : x(i), y(j), z(k) { }
-
-	bool operator<(const float3& a) const;
-};
+// dbprintf(fmt, ...)
+// printf(fmt, ...) only when compiled with DEBUG
+void dbprintf(const char *fmt, ...);
 
 #endif

@@ -42,10 +42,10 @@ const sf::Font& FontManager::loadFont(const std::string& name,
   const std::string full_path = fontPath_ + path;
   sf::Font font;
   if ( !font.loadFromFile(full_path) ) {
-    fprintf(stderr, "[ERROR] Could not load font: %s\n", full_path.c_str());
+    dbprintf("[ERROR] Could not load font: %s\n", full_path.c_str());
     exit(404);
   }
-  printf("Loaded font: %s\n", full_path.c_str());
+  dbprintf("Loaded font: %s\n", full_path.c_str());
   fonts_[name] = font;
   return fonts_[name];
 }
@@ -73,10 +73,10 @@ const sf::Texture& TextureManager::loadTexture(const std::string& name,
   const std::string full_path = imagePath_ + path;
   sf::Texture tex;
   if ( !tex.loadFromFile(full_path) ) {
-    fprintf(stderr, "[ERROR] Could not load texture: %s\n", full_path.c_str());
+    dbprintf("[ERROR] Could not load texture: %s\n", full_path.c_str());
     exit(404);
   }
-  printf("Loaded texture: %s\n", full_path.c_str());
+  dbprintf("Loaded texture: %s\n", full_path.c_str());
   textures_[name] = tex;
   return textures_[name];
 }
