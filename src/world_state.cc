@@ -23,7 +23,6 @@ void WorldState::reloadRoom() {
   Room* old = rooms_[room_idx_];
   rooms_[room_idx_] = new Room(old->x, old->y);
   delete old;
-  std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
 
 void WorldState::loadRoom(int index, bool load_adjacent) {

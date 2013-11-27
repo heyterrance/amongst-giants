@@ -6,9 +6,6 @@
 
 #include <iostream> // std::cout
 #include <stdio.h> // printf
-#include <sstream>
-#include <thread>
-#include <chrono>
 
 #include <SFML/System.hpp> // sf::Clock, sf::Keyboard
 #include <SFML/Graphics.hpp> // sf::Font, sf::RenderWindow, sf::Text
@@ -29,25 +26,36 @@ public:
 	void processKeyboard(float dt);
 	void draw(sf::RenderWindow& window) const;
 
+  // save()
+  // Save relevant information to a file
+  // TODO: Implement save()
 	void save();
 
 private:
 	// loadRoom()
-	// load specified room
+	// Load specified room
 	void loadRoom(int index, bool load_adjacent=false);
 	void loadRoom(int i, int j, bool load_adjacent=false);
 
 	// loadAdjacent()
-	// load adjacent rooms
+	// Load adjacent rooms
 	void loadAdjacent(int index);
 	void loadAdjacent(int i, int j);
 
 	// reloadRoom()
-	// reload current room
+	// Reload current room
 	void reloadRoom();
-	
+
+  // moveJack()
+  // Move Jack using the keyboard
 	void moveJack();
+
+  // checkRoomBounds()
+  // Transition to next room if necessary
 	void checkRoomBounds(float dt);
+
+  // checkCollision()
+  // Check and correct for collisions
 	void checkCollision(float dt);
 
 private:
