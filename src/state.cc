@@ -12,7 +12,7 @@ GameState::GameState() : manager_(nullptr) {
 }
 
 GameState::~GameState() {
-  printf("~GameState()\n");
+  dbprintf("~GameState()\n");
 }
 
 void GameState::push(GameState* state) const {
@@ -79,7 +79,7 @@ void StateManager::update(float dt) {
 		dt = 0.0f;
 	}
 	if(state_) state_->update(dt);
-	else fprintf(stderr, "Empty state stack!\n");
+	else dbprintf(stderr, "Empty state stack!\n");
 }
 
 void StateManager::draw(sf::RenderWindow& window) const {

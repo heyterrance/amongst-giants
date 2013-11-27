@@ -28,7 +28,11 @@ int main(int, char** argv) {
   setlocale(LC_NUMERIC, "");
   printf("======================================");
   printf("======================================\n");
+#ifdef DEBUG
+  printf("                         Amongst Giants (DEBUG Mode)\n");
+#else
   printf("                              Amongst Giants\n");
+#endif
   printf("======================================");
   printf("======================================\n\n");
 
