@@ -64,7 +64,7 @@ void WorldState::checkCollision(float dt) {
   if (!room) return;
   const float grav = 198.0f;
   jack_.ddy = grav;
-  
+
   for (const sf::Rect<float>& block: room->blocks) {
     auto bound_pair = jack_.fakeUpdate(dt); 
     // Check x collisions
@@ -76,19 +76,17 @@ void WorldState::checkCollision(float dt) {
 
     // Check y collisions
     if ( bound_pair.second.intersects(block) ) {
-      if (jack_.dy < 0.0f) {
+      if (jack_.dy < 0.0f) { // going up
         jack_.y = block.top + block.height;
-        jack_.can_jump = false;
-      } else if (jack_.dy > 0.0f) {
+        jack_.grounded = false;
+      } else if (jack_.dy > 0.0f) { // going down
         jack_.y = block.top - jack_.height();
-        jack_.in_air = false;
-        jack_.can_jump = true;
+        jack_.grounded = true;
+        jack_.ddy = 0.0f;
       }
       jack_.dy = 0.0f;
-      jack_.ddy = 0.0f;
     }
   }
-  if (jack_.ddy != 0.0f) jack_.can_jump = false;
 }
 
 void WorldState::processKeyboard(float dt) {
@@ -149,10 +147,9 @@ void WorldState::moveJack() {
   // Press Up or Down
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or
       sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    if (jack_.can_jump) {
+    if (jack_.grounded) {
       jack_.dy = -jump_vel;
-      jack_.can_jump = false;
-      jack_.in_air = true;
+      jack_.grounded = false;
     }
   } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or
              sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {

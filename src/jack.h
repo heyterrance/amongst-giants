@@ -39,9 +39,8 @@ public:
 public:
   float x,y;
   float dx, dy;
-  float ddx, ddy;
-  bool can_jump;
-  bool in_air;
+  float ddy;
+  bool grounded;
 
 private:
   // draw(target, states)

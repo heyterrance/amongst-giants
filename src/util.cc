@@ -17,14 +17,15 @@ std::string tolower(const std::string& str) {
 	return ss.str();
 }
 
-void dbprintf(const char *fmt, ...) {
 #ifdef DEBUG
+void dbprintf(const char *fmt, ...) {
   char buffer[256];
   va_list args;
   va_start (args, fmt);
   vsprintf(buffer, fmt, args);
   printf("%s", buffer);
   va_end(args);
-#endif
-  if (fmt) return;
 }
+#else
+void dbprintf(const char*, ...) { }
+#endif

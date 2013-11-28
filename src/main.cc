@@ -52,8 +52,8 @@ int main(int, char** argv) {
 #ifndef DEBUG
   manager.push(new IntroState());
 #else
-  manager.push(new WorldState());
 #endif
+  manager.push(new WorldState());
 
   std::thread logicThread(runLogic, std::ref(stat), std::ref(manager));
   runGraphics(stat, manager);

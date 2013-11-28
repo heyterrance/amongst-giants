@@ -3,10 +3,8 @@
 
 #include "jack.h"
 
-Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f),
-                               ddx(0.0f), ddy(0.0f),
-                               can_jump(false), in_air(true), 
-                               frame_(0u), time_(0.0f) {
+Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f), ddy(0.0f),
+                               grounded(false), frame_(0u), time_(0.0f) {
   sprite_.setTexture( TextureManager::getTexture("jack-walk") );
   sprite_.setPosition(x, y);
   for (int i = 0; i < 6; ++i)
@@ -21,7 +19,6 @@ Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f),
 void Jack::update(float dt) {
   animate(dt);
 
-  dx += ddx * dt;
   dy += ddy * 1.4f * dt;
   x += dx * dt;
   y += dy * dt;
@@ -39,7 +36,7 @@ void Jack::animate(float dt) {
     frame_ = (frame_ > 8) ? 0 : frame_ + 1;
   }
 
-  if (in_air or dx == 0.0f) {
+  if (not grounded or dx == 0.0f) {
     frame_ = 0;
     sprite_.setTextureRect(frames_[0]);
   } else  if (dx > 0.0f) {
