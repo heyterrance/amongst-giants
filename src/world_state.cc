@@ -5,11 +5,12 @@
 
 WorldState::WorldState() : GameState(), jack_(300.0f, 30.0f),
                            room_idx_(Room::getIndex(1,0)) {
-  for (int i = 0; i < Room::kRoomsX; ++i)
+  for (int i = 0; i < Room::kRoomsX; ++i) {
     for (int j = 0; j < Room::kRoomsY; ++j) {
       rooms_.push_back(nullptr);
       dbprintf("%d: (%d, %d)\n", Room::getIndex(i, j), i, j);
     }
+  }
   loadRoom(room_idx_);
 }
 
@@ -66,7 +67,7 @@ void WorldState::checkCollision(float dt) {
   jack_.ddy = grav;
 
   for (const sf::Rect<float>& block: room->blocks) {
-    auto bound_pair = jack_.fakeUpdate(dt); 
+    const auto bound_pair = jack_.fakeUpdate(dt); 
     // Check x collisions
     if ( bound_pair.first.intersects(block) ) {
       if (jack_.dx < 0.0f) jack_.x = block.left + block.width;
@@ -101,7 +102,7 @@ void WorldState::processKeyboard(float dt) {
 }
 
 void WorldState::checkRoomBounds(float dt) {
-  float x1 = jack_.x + jack_.dx * dt;
+  const float x1 = jack_.x + jack_.dx * dt;
   if (x1 + jack_.width() > WIN_WIDTH) {
     const int next_idx = rooms_[room_idx_]->next(+1, 0);
     if (next_idx != room_idx_) {
@@ -116,7 +117,7 @@ void WorldState::checkRoomBounds(float dt) {
     }
   }
   
-  float y1 = jack_.y + jack_.dy * dt;
+  const float y1 = jack_.y + jack_.dy * dt;
   if (y1 + jack_.height() > WIN_HEIGHT) { // at the bottom
     const int next_idx = rooms_[room_idx_]->next(0, +1);
     if (next_idx != room_idx_) {
@@ -159,9 +160,8 @@ void WorldState::moveJack() {
 
 void WorldState::draw(sf::RenderWindow& window) const {
   window.draw(jack_);
-  if (rooms_[room_idx_]) {
+  if (rooms_[room_idx_])
     window.draw(*rooms_[room_idx_]);
-  }
 }
   
 void WorldState::save() {
