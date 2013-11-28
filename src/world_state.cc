@@ -91,6 +91,7 @@ void WorldState::checkCollision(float dt) {
 }
 
 void WorldState::processKeyboard(float dt) {
+  // Press 'R' to reload room
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
     while (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
       // Wait for it to be released before reloading room
