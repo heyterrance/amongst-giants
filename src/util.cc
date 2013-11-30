@@ -17,6 +17,16 @@ std::string tolower(const std::string& str) {
 	return ss.str();
 }
 
+void errprintf(const char* fmt, ...) {
+  char buffer[256];
+  va_list args;
+  va_start (args, fmt);
+  vsprintf(buffer, fmt, args);
+  fprintf(stderr, "%s", buffer);
+  va_end(args);
+}
+
+
 #ifdef DEBUG
 void dbprintf(const char *fmt, ...) {
   char buffer[256];

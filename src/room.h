@@ -13,7 +13,7 @@
 
 #include "resources.h" // FontManager
 #include "constants.h"
-#include "util.h" // dbprintf
+#include "util.h" // errprintf, dbprintf
 
 class Room : public sf::Drawable {
 public:

@@ -69,31 +69,31 @@ void Room::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 void Room::load(const std::string& filename) {
   std::ifstream file(filename);
   if (not file) {
-    fprintf(stderr, "error: no file %s\n", filename.c_str());
+    errprintf("error: no file %s\n", filename.c_str());
     return;
   } else if (filename.rfind(".room") == std::string::npos) {
-		fprintf(stderr, "error: invalid room file %s\n", filename.c_str());
+		errprintf("error: invalid room file %s\n", filename.c_str());
 		return;
 	}
   std::string line;
   int line_number = 0;
   while (std::getline(file, line) and ++line_number) {
-    if (line.length() <= 0) continue;
+    if (line.length() <= 0)
+      continue;
     std::istringstream iss(line);
     std::string type;
     iss >> type;
-    if (type == "block") {
+    if (type == "//" or type == "#") {
+      continue;
+    } else if (type == "block") {
       float x, y, w, h;
       if (iss >> x >> y >> w >> h)
         addBlock(x, y, w, h);
       else
-        fprintf(stderr, "%s(%d): error: unexpected parameter(s)\n\t%s\n",
+        errprintf("%s(%d): error: unexpected parameter(s)\n\t%s\n",
             filename.c_str(), line_number, line.c_str());
-      continue;
-    } else if (type == "//") {
-      continue;
     } else {
-      fprintf(stderr, "%s(%d): error: unexpected type \"%s\"\n",
+      errprintf("%s(%d): error: unexpected type \"%s\"\n",
           filename.c_str(), line_number, type.c_str());
     }
   }
