@@ -67,7 +67,7 @@ std::pair< sf::Rect<float>, sf::Rect<float> > Jack::fakeUpdate(float dt) const {
   sf::Rect<float> x_bounds(bounds_), y_bounds(bounds_);
   x_bounds.left += dx * dt;
   y_bounds.top = f_y;
-  return std::make_pair(x_bounds, y_bounds);
+  return {x_bounds, y_bounds};
 }
 
 float Jack::width() const {

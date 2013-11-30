@@ -26,7 +26,7 @@ int Room::getIndex(int i, int j) {
 std::pair<int, int> Room::getPos(int index) {
   int j = index % kRoomsX;
   int i = index / kRoomsX;
-  return std::pair<int, int>(i, j);
+  return {i, j};
 }
 
 int Room::next(int i, int j) const {
