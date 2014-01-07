@@ -10,6 +10,7 @@
 #include <SFML/Window.hpp> // sf::Event
 #include <SFML/Graphics.hpp> // sf::RenderWindow, sf::Color
 
+#include "util.h" // dbprintf
 #include "constants.h" // WIN_WIDTH, WIN_HEIGHT
 #include "state.h" // StateManager
 #include "intro_state.h" // IntroState
@@ -28,11 +29,8 @@ int main(int, char** argv) {
   setlocale(LC_NUMERIC, "");
   printf("======================================");
   printf("======================================\n");
-#ifdef DEBUG
-  printf("                         Amongst Giants (DEBUG Mode)\n");
-#else
   printf("                              Amongst Giants\n");
-#endif
+  dbprintf("                               (DEBUG MODE)\n");
   printf("======================================");
   printf("======================================\n\n");
 
