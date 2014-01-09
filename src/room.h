@@ -17,19 +17,6 @@
 
 class Room : public sf::Drawable {
 public:
-	const int x, y;
-	const int index;
-
-	static const int kRoomsX = 2;
-	static const int kRoomsY = 2;
-	static const int kRooms = kRoomsX * kRoomsY;
-
-	// TODO Think of a way to represent depth/order of drawing
-	std::vector<sf::Drawable*> drawables;
-
-	std::vector< sf::Rect<float> > blocks;
-
-public:
 	Room(int x, int y);
 	~Room();
 
@@ -43,12 +30,25 @@ public:
 	void load(const std::string& filename);
 	void save() const;
 
+public:
+	const int x, y;
+	const int index;
+
+	static const int kRoomsX = 2;
+	static const int kRoomsY = 2;
+	static const int kRooms = kRoomsX * kRoomsY;
+
+	// TODO Think of a way to represent depth/order of drawing
+	std::vector<sf::Drawable*> drawables;
+
+	std::vector< sf::Rect<float> > blocks;
+
 private:
 	Room() : x(-1), y(-1), index(-1) { } // A room must have a location
 	
   void addBlock(float left, float top, float width, float height,
 								const sf::Color& color=sf::Color::Black);
-	void loadBlocks();
+	void buildBounds();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

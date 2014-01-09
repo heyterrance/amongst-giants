@@ -5,16 +5,13 @@
 
 Room::Room(int i, int j) : x(i), y(j), index( getIndex(i, j) ) {
   dbprintf("Room() %d: (%d, %d)\n", index, x, y);
-  loadBlocks();
+  buildBounds();
   load(RoomManager::getFile(index));
 }
 
 Room::~Room() {
-  for (auto d: drawables) {
-    if (d)
-      delete d;
-    d = nullptr;
-  }
+  for (auto d: drawables)
+    if (d) delete d;
 }
 
 int Room::getIndex(int i, int j) {
@@ -24,8 +21,8 @@ int Room::getIndex(int i, int j) {
 }
 
 std::pair<int, int> Room::getPos(int index) {
-  int j = index % kRoomsX;
-  int i = index / kRoomsX;
+  const int j = index % kRoomsX;
+  const int i = index / kRoomsX;
   return {i, j};
 }
 
@@ -38,17 +35,22 @@ int Room::next(int i, int j) const {
 void Room::addBlock(float left, float top, float width, float height,
                     const sf::Color& color) {
   blocks.push_back(sf::Rect<float>(left, top, width, height));
-  sf::RectangleShape* rect = new sf::RectangleShape(sf::Vector2f(width, height));
-  rect->setPosition(left, top);
-  rect->setFillColor(color);
+  
+  sf::RectangleShape* rect =
+      new sf::RectangleShape(sf::Vector2f(width, height));
   sf::RectangleShape* shadow = new sf::RectangleShape(*rect);
+  
+  rect->setPosition(left, top);
   shadow->setPosition(left + 4, top + 4);
+  
+  rect->setFillColor(color);
   shadow->setFillColor(sf::Color(0, 0, 0, 40));
+
   drawables.push_back(shadow);
   drawables.push_back(rect);
 }
 
-void Room::loadBlocks() {
+void Room::buildBounds() {
   // Side borders
   if (x == kRoomsX - 1)
     addBlock(WIN_WIDTH - 4.0f, -20.0f, 4.0f, WIN_HEIGHT + 20.0f, sf::Color::Blue);
@@ -91,10 +93,10 @@ void Room::load(const std::string& filename) {
         addBlock(x, y, w, h);
       else
         errprintf("%s(%d): error: unexpected parameter(s)\n\t%s\n",
-            filename.c_str(), line_number, line.c_str());
+                  filename.c_str(), line_number, line.c_str());
     } else {
       errprintf("%s(%d): error: unexpected type \"%s\"\n",
-          filename.c_str(), line_number, type.c_str());
+                filename.c_str(), line_number, type.c_str());
     }
   }
 }
