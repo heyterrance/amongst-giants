@@ -1,7 +1,6 @@
 # Amongst Giants
 _Amongst Giants_ is a game that might be fun or creative in some way. It was
-started as a way to become more familiar with game development and design, pad
-my GitHub, and prove I know C++.
+started as a way to become more familiar with game development and design.
 
 ## Getting Started
 Assuming you have a __C++11__ compliant compiler and have installed the other
