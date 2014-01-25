@@ -20,7 +20,7 @@ WorldState::~WorldState() {
       delete rooms_[i];
 }
 
-void WorldState::reloadRoom() {
+void WorldState::refresh() {
   Room* old = rooms_[room_idx_];
   rooms_[room_idx_] = new Room(old->x, old->y);
   delete old;
@@ -97,7 +97,7 @@ void WorldState::processKeyboard(float dt) {
       // Wait for it to be released before reloading room
     }
     dt = 0.0f;
-    reloadRoom();
+    refresh();
   }
   moveJack();
 }

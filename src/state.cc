@@ -82,6 +82,10 @@ void StateManager::update(float dt) {
 	else dbprintf("Empty state stack!\n");
 }
 
+void StateManager::refresh() {
+	if (state_) state_->refresh();
+}
+
 void StateManager::draw(sf::RenderWindow& window) const {
 	if (state_) state_->draw(window);
 }

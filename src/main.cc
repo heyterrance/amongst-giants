@@ -3,6 +3,7 @@
 
 #include <stdio.h> // printf
 #include <locale.h> // setlocale, LC_NUMERIC
+#include <iostream> // std::cout, std::cin
 #include <sstream> // std::stringstream
 #include <thread> // std::thread
 
@@ -24,6 +25,7 @@ typedef struct _window_status {
 
 void runLogic(const WindowStatus& stat, StateManager& manager);
 void runGraphics(WindowStatus& stat, const StateManager& manager);
+void cmdPrompt(WindowStatus& stat, StateManager& manager);
 
 int main(int, char** argv) {
   setlocale(LC_NUMERIC, "");
@@ -54,8 +56,10 @@ int main(int, char** argv) {
 #endif
 
   std::thread logicThread(runLogic, std::ref(stat), std::ref(manager));
+  std::thread cmdThread(cmdPrompt, std::ref(stat), std::ref(manager));
   runGraphics(stat, manager);
   logicThread.join();
+  cmdThread.join();
 
   return 0;
 }
@@ -85,6 +89,8 @@ void runGraphics(WindowStatus& stat, const StateManager& manager) {
     }
 
     if (not stat.focused) {
+      if (not stat.isOpen) // triggered by command prompt.
+        window.close();
 #ifdef DEBUG
       clock.restart();
 #endif
@@ -139,5 +145,19 @@ void runLogic(const WindowStatus& stat, StateManager& manager) {
       elapsed = 0.0f;
     }
 #endif
+  }
+}
+
+void cmdPrompt(WindowStatus& stat, StateManager& manager) {
+  std::string cmd;
+  while (true) {
+    std::cout << ">> ";
+    std::cin >> cmd;
+    if (cmd.compare("refresh") == 0) {
+      manager.refresh();
+    } else if (cmd.compare("quit") == 0 || cmd.compare("exit") == 0) {
+      stat.isOpen = false;
+      break;
+    }
   }
 }

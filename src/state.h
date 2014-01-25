@@ -32,6 +32,8 @@ public:
   // Draw contents to window.
   virtual void draw(sf::RenderWindow& window) const = 0;
 
+	virtual void refresh() { };
+
   // save()
   // Save necessary information.
   virtual void save() = 0;
@@ -78,6 +80,10 @@ public:
   // update(dt)
   // Process next frame of logic.
   void update(float dt);
+	
+	// refresh()
+	// Refresh underlying room.
+	void refresh();
 
   // draw(window)
   // Draw top state to window.

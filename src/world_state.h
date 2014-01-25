@@ -43,9 +43,9 @@ private:
 	void loadAdjacent(int index);
 	void loadAdjacent(int i, int j);
 
-	// reloadRoom()
+	// refresh()
 	// Reload current room.
-	void reloadRoom();
+	void refresh();
 
   // moveJack()
   // Move Jack using the keyboard.
