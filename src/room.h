@@ -6,6 +6,7 @@
 
 #include <stdio.h> // printf
 #include <algorithm> // std::min, std::max
+#include <iostream> // std::cout
 #include <fstream> // std::ifstream
 #include <sstream> // std::istringstream
 

@@ -150,11 +150,15 @@ void runLogic(const WindowStatus& stat, StateManager& manager) {
 
 void cmdPrompt(WindowStatus& stat, StateManager& manager) {
   std::string cmd;
-  while (true) {
+  while (not stat.isOpen)
+    cmd = "waiting";
+  while (stat.isOpen) {
     std::cout << ">> ";
     std::cin >> cmd;
     if (cmd.compare("refresh") == 0) {
       manager.refresh();
+    } else if (cmd.compare("room") == 0) {
+      // Do something
     } else if (cmd.compare("quit") == 0 || cmd.compare("exit") == 0) {
       stat.isOpen = false;
       break;

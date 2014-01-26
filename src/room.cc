@@ -77,6 +77,8 @@ void Room::load(const std::string& filename) {
 		errprintf("error: invalid room file %s\n", filename.c_str());
 		return;
 	}
+
+  std::cout << "Loading room: " << filename << '\n';
   std::string line;
   int line_number = 0;
   while (std::getline(file, line) and ++line_number) {
