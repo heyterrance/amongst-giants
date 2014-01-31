@@ -70,6 +70,15 @@ std::pair< sf::Rect<float>, sf::Rect<float> > Jack::fakeUpdate(float dt) const {
   return {x_bounds, y_bounds};
 }
 
+typedef std::pair< sf::Rect<float>, sf::Rect<float> > rectFloatPair;
+rectFloatPair Jack::fakeUpdateY(float dt) const {
+  const float f_dy = dy + 1.4 * ddy * dt;
+  const float f_y = y + f_dy * dt;
+  sf::Rect<float> x_bounds(bounds_), y_bounds(bounds_);
+  y_bounds.top = f_y;
+  return {x_bounds, y_bounds};
+}
+
 float Jack::width() const {
   return bounds_.width;
 }

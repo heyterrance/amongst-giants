@@ -49,7 +49,7 @@ private:
 
   // moveJack()
   // Move Jack using the keyboard.
-	void moveJack();
+	void moveJack(float dt);
 
   // checkRoomBounds()
   // Transition to next room if necessary.
@@ -58,6 +58,10 @@ private:
   // checkCollision()
   // Check and correct for collisions.
 	void checkCollision(float dt);
+
+  // groundBelow(dt)
+  // Return true if ground below main character.
+  bool groundBelow(float dt);
 
 private:
 	Jack jack_;

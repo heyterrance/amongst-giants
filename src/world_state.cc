@@ -90,16 +90,28 @@ void WorldState::checkCollision(float dt) {
   }
 }
 
-void WorldState::processKeyboard(float dt) {
-  // Press 'R' to reload room
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-    while (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-      // Wait for it to be released before reloading room
+bool WorldState::groundBelow(float dt) {
+  if (jack_.dy < 0.0f) return false;
+  const Room* room = rooms_[room_idx_];
+  const float grav = 198.0f;
+  const float old_ddy = jack_.ddy;
+  jack_.ddy = grav;
+  
+  
+  for (const sf::Rect<float>& block: room->blocks) {
+    const auto bound_pair = jack_.fakeUpdateY(dt); 
+    if ( bound_pair.second.intersects(block) ) {
+      jack_.ddy = old_ddy;
+      return true;
     }
-    dt = 0.0f;
-    refresh();
   }
-  moveJack();
+  jack_.ddy = old_ddy;
+  return false;
+  
+}
+
+void WorldState::processKeyboard(float dt) {
+  moveJack(dt);
 }
 
 void WorldState::checkRoomBounds(float dt) {
@@ -134,7 +146,7 @@ void WorldState::checkRoomBounds(float dt) {
   }
 }
 
-void WorldState::moveJack() {
+void WorldState::moveJack(float dt) {
   const float jump_vel(188.0f);
   const float vel(95.0f);
 
@@ -149,7 +161,7 @@ void WorldState::moveJack() {
   // Press Up or Down
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or
       sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    if (jack_.grounded) {
+    if (groundBelow(dt)) {
       jack_.dy = -jump_vel;
       jack_.grounded = false;
     }
