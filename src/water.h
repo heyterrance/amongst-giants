@@ -10,7 +10,7 @@
 
 #include "resources.h"
 
-class WATER : public sf::Drawable {
+class Water : public sf::Drawable {
 public:
   float x,y;
   float height, width;
