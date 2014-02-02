@@ -5,7 +5,7 @@
 CC=g++
 
 STDLIB=-std=c++11
-WARNINGS=-Wall -Wextra -Werror
+WARNINGS=-Wall -Wextra
 DBUG=-DDEBUG -g
 OPTLVL=-O4
 SFML=-lsfml-system -lsfml-graphics -lsfml-audio -lsfml-window
