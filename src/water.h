@@ -18,14 +18,13 @@ public:
 
   const sf::Rect<float>& bounds() const;
 
-  unsigned int frame;
-  float total_time;
-
 public:
   float x,y;
   float height, width;
 
 private:
+  float total_time_;
+
   sf::Rect<float> bounds_;
   sf::RectangleShape image_;
 

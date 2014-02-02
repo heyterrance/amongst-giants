@@ -16,6 +16,8 @@
 #include "constants.h"
 #include "util.h" // errprintf, dbprintf
 
+#include "water.h" // Water
+
 class Room : public sf::Drawable {
 public:
 	Room(int x, int y);
@@ -27,6 +29,8 @@ public:
 	// next(x, y)
 	// @return -- index of adjacent room
 	int next(int x, int y) const;
+
+  void update(float dt);
 
 	void load(const std::string& filename);
 	void save() const;
@@ -43,10 +47,12 @@ public:
 	std::vector<sf::Drawable*> drawables;
 
 	std::vector< sf::Rect<float> > blocks;
+  std::vector<Water> waters;
 
 private:
 	Room() : x(-1), y(-1), index(-1) { } // A room must have a location
 	
+  void addWater(float left, float top);
   void addBlock(float left, float top, float width, float height,
 								const sf::Color& color=sf::Color::Black);
 	void buildBounds();

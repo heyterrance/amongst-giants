@@ -32,6 +32,10 @@ int Room::next(int i, int j) const {
   return (nxt >= 0) ? nxt : index;
 }
 
+void Room::addWater(float left, float top) {
+  waters.emplace_back(left, top); 
+}
+
 void Room::addBlock(float left, float top, float width, float height,
                     const sf::Color& color) {
   blocks.push_back(sf::Rect<float>(left, top, width, height));
@@ -52,22 +56,23 @@ void Room::addBlock(float left, float top, float width, float height,
 
 void Room::buildBounds() {
   // Side borders
+  const auto blue = sf::Color::Blue;
   if (x == kRoomsX - 1)
-    addBlock(WIN_WIDTH - 4.0f, -20.0f, 4.0f, WIN_HEIGHT + 20.0f, sf::Color::Blue);
+    addBlock(WIN_WIDTH - 4.0f, -20.0f, 4.0f, WIN_HEIGHT + 20.0f, blue);
   else if (x == 0)
-    addBlock(0.0f, -20.0f, 4.0f, WIN_HEIGHT + 20.0f, sf::Color::Blue);
+    addBlock(0.0f, -20.0f, 4.0f, WIN_HEIGHT + 20.0f, blue);
   // Top and bottom borders
   if (y == kRoomsY - 1)
-    addBlock(-20.0f, WIN_HEIGHT - 4.0f, WIN_WIDTH + 20.0f, 4.0f, sf::Color::Blue);
+    addBlock(-20.0f, WIN_HEIGHT - 4.0f, WIN_WIDTH + 20.0f, 4.0f, blue);
   else if (y == 0)
-    addBlock(-20.0f, 0.0f, WIN_WIDTH + 20.0f, 4.0f, sf::Color::Blue);
-}
-
-void Room::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  for (auto drawable: drawables)
-    target.draw(*drawable, states);
+    addBlock(-20.0f, 0.0f, WIN_WIDTH + 20.0f, 4.0f, blue);
 }
   
+void Room::update(float dt) {
+  for (auto& w : waters)
+    w.update(dt);
+}
+
 void Room::load(const std::string& filename) {
   std::ifstream file(filename);
   if (not file) {
@@ -96,6 +101,13 @@ void Room::load(const std::string& filename) {
       else
         errprintf("%s(%d): error: unexpected parameter(s)\n\t%s\n",
                   filename.c_str(), line_number, line.c_str());
+    } else if (type == "water") {
+      float x, y;
+      if (iss >> x >> y)
+        addWater(x, y);
+      else
+        errprintf("%s(%d): error: unexpected parameter(s)\n\t%s\n",
+                  filename.c_str(), line_number, line.c_str());
     } else {
       errprintf("%s(%d): error: unexpected type \"%s\"\n",
                 filename.c_str(), line_number, type.c_str());
@@ -104,4 +116,11 @@ void Room::load(const std::string& filename) {
 }
   
 void Room::save() const {
+}
+
+void Room::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+  for (auto w : waters)
+    target.draw(w, states);
+  for (const auto& drawable: drawables)
+    target.draw(*drawable, states);
 }

@@ -57,12 +57,15 @@ void WorldState::update(float dt) {
   checkCollision(dt);
   checkRoomBounds(dt);
   jack_.update(dt);
+  Room* room = rooms_[room_idx_];
+  if (room)
+		room->update(dt);
   loadRoom(room_idx_, true);
 }
 
 void WorldState::checkCollision(float dt) {
   const Room* room = rooms_[room_idx_];
-  if (!room) return;
+  if (not room) return;
   const float grav = 198.0f;
   jack_.ddy = grav;
 
@@ -172,9 +175,9 @@ void WorldState::moveJack(float dt) {
 }
 
 void WorldState::draw(sf::RenderWindow& window) const {
-  window.draw(jack_);
   if (rooms_[room_idx_])
     window.draw(*rooms_[room_idx_]);
+  window.draw(jack_);
 }
   
 void WorldState::save() {

@@ -7,13 +7,11 @@
 #include <stdio.h> // printf
 #include <utility> // std::pair, std::make_pair
 
-#include <SFML/Graphics.hpp> // sf::Sprite, sf::Drawable, sf::RenderTarget,
-                             // sf::RenderStates, sf::Rect, sf::IntRect
+#include <SFML/Graphics.hpp> // sf::Drawable, sf::RenderTarget, etc;
 
 #include "resources.h" // TextureManager
 
 class Jack : public sf::Drawable {
-  typedef std::pair< sf::Rect<float>, sf::Rect<float> > rectFloatPair;
 public:
   // Jack(x, y)
   // Instantiate a Jack with coordinates (x, y).
@@ -26,6 +24,7 @@ public:
   // fakeUpdate(dt)
   // Return a pair of bounds, where the first is updated only in the
   // x-direction and second in the y-direction.
+  typedef std::pair< sf::Rect<float>, sf::Rect<float> > rectFloatPair;
   rectFloatPair fakeUpdate(float dt) const;
   rectFloatPair fakeUpdateY(float dt) const;
 
