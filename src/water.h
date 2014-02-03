@@ -19,7 +19,7 @@ public:
   const sf::Rect<float>& bounds() const;
 
 public:
-  float x,y;
+  float x, y, y0;
   float height, width;
 
 private:

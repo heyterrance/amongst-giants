@@ -51,8 +51,7 @@ public:
 
 private:
 	Room() : x(-1), y(-1), index(-1) { } // A room must have a location
-	
-  void addWater(float left, float top);
+
   void addBlock(float left, float top, float width, float height,
 								const sf::Color& color=sf::Color::Black);
 	void buildBounds();

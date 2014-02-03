@@ -53,13 +53,13 @@ void WorldState::loadAdjacent(int i, int j) {
 
 void WorldState::update(float dt) {
   if (dt == 0.0f) return;
+  Room* room = rooms_[room_idx_];
+  if (room)
+		room->update(dt);
   processKeyboard(dt);
   checkCollision(dt);
   checkRoomBounds(dt);
   jack_.update(dt);
-  Room* room = rooms_[room_idx_];
-  if (room)
-		room->update(dt);
   loadRoom(room_idx_, true);
 }
 

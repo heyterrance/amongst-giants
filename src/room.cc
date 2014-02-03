@@ -32,10 +32,6 @@ int Room::next(int i, int j) const {
   return (nxt >= 0) ? nxt : index;
 }
 
-void Room::addWater(float left, float top) {
-  waters.emplace_back(left, top); 
-}
-
 void Room::addBlock(float left, float top, float width, float height,
                     const sf::Color& color) {
   blocks.push_back(sf::Rect<float>(left, top, width, height));
@@ -103,11 +99,16 @@ void Room::load(const std::string& filename) {
                   filename.c_str(), line_number, line.c_str());
     } else if (type == "water") {
       float x, y;
-      if (iss >> x >> y)
-        addWater(x, y);
-      else
+      if (iss >> x >> y) {
+        float w, h;
+        if (iss >> w >> h)
+          waters.emplace_back(x, y, w, h);
+        else
+          waters.emplace_back(x, y);
+      } else {
         errprintf("%s(%d): error: unexpected parameter(s)\n\t%s\n",
                   filename.c_str(), line_number, line.c_str());
+      }
     } else {
       errprintf("%s(%d): error: unexpected type \"%s\"\n",
                 filename.c_str(), line_number, type.c_str());
