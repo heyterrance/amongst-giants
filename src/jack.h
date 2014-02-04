@@ -41,6 +41,8 @@ public:
   float x,y;
   float dx, dy;
   float ddy;
+  float walk_vel;
+  float jump_vel;
   bool grounded;
 
 private:

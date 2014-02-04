@@ -4,7 +4,9 @@
 #include "jack.h"
 
 Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f), ddy(0.0f),
-                               grounded(false), frame_(0u), time_(0.0f) {
+                               walk_vel(94.0f), jump_vel(188.0f),
+                               grounded(false),
+                               frame_(0u), time_(0.0f) {
   sprite_.setTexture( TextureManager::getTexture("jack-walk") );
   sprite_.setPosition(x, y);
   for (int i = 0; i < 6; ++i)
@@ -19,7 +21,7 @@ Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f), ddy(0.0f),
 void Jack::update(float dt) {
   animate(dt);
 
-  dy += ddy * 1.4f * dt;
+  dy += ddy * dt; // 1.4f * dt;
   x += dx * dt;
   y += dy * dt;
   sprite_.setPosition(x, y);
@@ -64,7 +66,7 @@ void Jack::animate(float dt) {
 typedef std::pair< sf::Rect<float>, sf::Rect<float> > rectFloatPair;
 
 rectFloatPair Jack::fakeUpdate(float dt) const {
-  const float f_dy = dy + 1.4 * ddy * dt;
+  const float f_dy = dy + ddy * dt;
   const float f_y = y + f_dy * dt;
   sf::Rect<float> x_bounds(bounds_), y_bounds(bounds_);
   x_bounds.left += dx * dt;
@@ -73,11 +75,11 @@ rectFloatPair Jack::fakeUpdate(float dt) const {
 }
 
 rectFloatPair Jack::fakeUpdateY(float dt) const {
-  const float f_dy = dy + 1.4 * ddy * dt;
+  const float f_dy = dy + ddy * dt;
   const float f_y = y + f_dy * dt;
-  sf::Rect<float> x_bounds(bounds_), y_bounds(bounds_);
+  sf::Rect<float> y_bounds(bounds_);
   y_bounds.top = f_y;
-  return {x_bounds, y_bounds};
+  return {bounds_, y_bounds};
 }
 
 float Jack::width() const {

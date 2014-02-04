@@ -66,6 +66,7 @@ private:
 private:
 	Jack jack_;
 	int room_idx_;
+  float grav_;
 	std::vector<Room*> rooms_;
 };
 

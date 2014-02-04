@@ -5,16 +5,16 @@ Water::Water(float x, float y, float h, float w) :
     total_time_(0),
     bounds_(x, y, w, h),
     image_(sf::Vector2f(w, h)) {
-  image_.setFillColor(sf::Color(150, 170, 220));
+  image_.setFillColor(sf::Color(150, 170, 220, 196));
   image_.setPosition(x, y);
 }
 
 void Water::update(float dt) {
-	const float amp = 10.0f;
-	const float period = 2.0f;
-  const float pi = 3.1415926535f;
+	static const float amp = 10.0f;
+	static const float period = 2.0f;
+  static const float pi = 3.1415926535f;
 	total_time_ += dt;
-  const float EPSILON = 0.1f;
+  static const float EPSILON = 0.1f;
   // Reset total_time_ after a full period
   if (fabs(total_time_ - 2.0f * period) < EPSILON)
     total_time_ = 0.0f;

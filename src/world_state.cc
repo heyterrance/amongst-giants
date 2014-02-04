@@ -4,7 +4,7 @@
 #include "world_state.h"
 
 WorldState::WorldState() : GameState(), jack_(300.0f, 30.0f),
-                           room_idx_(Room::getIndex(1,0)) {
+                           room_idx_(Room::getIndex(1,0)), grav_(298.0f) {
   for (int i = 0; i < Room::kRoomsX; ++i) {
     for (int j = 0; j < Room::kRoomsY; ++j) {
       rooms_.push_back(nullptr);
@@ -66,8 +66,7 @@ void WorldState::update(float dt) {
 void WorldState::checkCollision(float dt) {
   const Room* room = rooms_[room_idx_];
   if (not room) return;
-  const float grav = 198.0f;
-  jack_.ddy = grav;
+  jack_.ddy = grav_;
 
   for (const sf::Rect<float>& block: room->blocks) {
     const auto bound_pair = jack_.fakeUpdate(dt); 
@@ -91,14 +90,28 @@ void WorldState::checkCollision(float dt) {
       jack_.dy = 0.0f;
     }
   }
+  const auto& jbounds = jack_.bounds();
+  bool in_water = false;
+  for (const Water& w : room->waters) {
+    if ( jbounds.intersects( w.bounds() ) ) {
+      in_water = true;
+      break;
+    }
+  }
+  if (in_water) {
+    jack_.walk_vel = 55.0f;
+    grav_ = 328.0f;
+  } else {
+    jack_.walk_vel = 94.0f;
+    grav_ = 298.0f;
+  }
 }
 
 bool WorldState::groundBelow(float dt) {
   if (jack_.dy < 0.0f) return false;
   const Room* room = rooms_[room_idx_];
-  const float grav = 198.0f;
   const float old_ddy = jack_.ddy;
-  jack_.ddy = grav;
+  jack_.ddy = grav_;
   
   
   for (const sf::Rect<float>& block: room->blocks) {
@@ -150,34 +163,35 @@ void WorldState::checkRoomBounds(float dt) {
 }
 
 void WorldState::moveJack(float dt) {
-  const float jump_vel(188.0f);
-  const float vel(95.0f);
-
   // Press Left or Right
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or
       sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    jack_.dx = -vel;
+    jack_.dx = -jack_.walk_vel;
   else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or
              sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    jack_.dx = vel;
+    jack_.dx = jack_.walk_vel;
 
   // Press Up or Down
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or
       sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
     if (groundBelow(dt)) {
-      jack_.dy = -jump_vel;
+      jack_.dy = -jack_.jump_vel;
       jack_.grounded = false;
     }
   } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or
              sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    jack_.dy = jump_vel;
+    jack_.dy = 2 * jack_.jump_vel;
   }
 }
 
 void WorldState::draw(sf::RenderWindow& window) const {
-  if (rooms_[room_idx_])
-    window.draw(*rooms_[room_idx_]);
+  const Room* r = rooms_[room_idx_];
+  if (not r) return;
+
+  window.draw(*r);
   window.draw(jack_);
+  for (const auto& w : r->waters)
+    window.draw(w);
 }
   
 void WorldState::save() {

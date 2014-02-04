@@ -120,8 +120,6 @@ void Room::save() const {
 }
 
 void Room::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  for (auto w : waters)
-    target.draw(w, states);
   for (const auto& drawable: drawables)
     target.draw(*drawable, states);
 }
