@@ -53,11 +53,11 @@ void WorldState::loadAdjacent(int i, int j) {
 
 void WorldState::update(float dt) {
   if (dt == 0.0f) return;
+  processKeyboard(dt);
+  checkCollision(dt);
   Room* room = rooms_[room_idx_];
   if (room)
 		room->update(dt);
-  processKeyboard(dt);
-  checkCollision(dt);
   checkRoomBounds(dt);
   jack_.update(dt);
   loadRoom(room_idx_, true);
@@ -83,7 +83,7 @@ void WorldState::checkCollision(float dt) {
         jack_.y = block.top + block.height;
         jack_.grounded = false;
       } else if (jack_.dy > 0.0f) { // going down
-        jack_.y = block.top - jack_.height();
+        jack_.y = block.top - jack_.height() - 0.1f;;
         jack_.grounded = true;
         jack_.ddy = 0.0f;
       }
