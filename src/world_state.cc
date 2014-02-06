@@ -188,10 +188,10 @@ void WorldState::draw(sf::RenderWindow& window) const {
   const Room* r = rooms_[room_idx_];
   if (not r) return;
 
-  window.draw(*r);
   window.draw(jack_);
   for (const auto& w : r->waters)
     window.draw(w);
+  window.draw(*r);
 }
   
 void WorldState::save() {
