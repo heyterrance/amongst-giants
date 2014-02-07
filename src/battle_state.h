@@ -23,8 +23,7 @@ public:
 
   void save();
 
-private:
-    
+private:    
 };
 
 #endif

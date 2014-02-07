@@ -21,7 +21,7 @@ Jack::Jack(float x, float y) : x(x), y(y), dx(0.0f), dy(0.0f), ddy(0.0f),
 void Jack::update(float dt) {
   animate(dt);
 
-  dy += ddy * dt; // 1.4f * dt;
+  dy += ddy * dt;
   x += dx * dt;
   y += dy * dt;
   sprite_.setPosition(x, y);
@@ -31,7 +31,7 @@ void Jack::update(float dt) {
 }
 
 void Jack::animate(float dt) {
-  const float f_time = 1.0f/6.0f;
+  const float f_time = 1.0f/6.0f; // time for each frame.
   time_ += dt;
   if (time_ > f_time) {
     time_ = 0.0f;
