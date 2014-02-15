@@ -55,8 +55,8 @@ int main(int, char** argv) {
   manager.push(new WorldState());
 #endif
 
-  std::thread logicThread(runLogic, std::ref(stat), std::ref(manager));
-  std::thread cmdThread(cmdPrompt, std::ref(stat), std::ref(manager));
+  std::thread logicThread([&](){ runLogic(stat, manager); });
+  std::thread cmdThread([&](){ cmdPrompt(stat, manager); });
   runGraphics(stat, manager);
   logicThread.join();
   cmdThread.join();
