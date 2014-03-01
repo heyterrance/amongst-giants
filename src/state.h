@@ -4,10 +4,11 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include <stack>
+#include <memory>
 #include <stdio.h> // printf
-#include <stack> // std::stack
 
-#include <SFML/System.hpp> // float
+#include <SFML/System.hpp>
 #include <SFML/Window.hpp> // sf::Event
 #include <SFML/Graphics.hpp> // sf::RenderWindow
 
@@ -63,17 +64,15 @@ private:
 class StateManager {
 public:
   StateManager();
+
   ~StateManager();
 
-  // push(state)
   // Push state onto stack and sets its manager.
   void push(GameState* state);
   
-  // pop()
   // Pop a state from stack.
   void pop();
 
-  // replaceWith(state)
   // Calls pop() then push(state).
   void replaceWith(GameState* state);
 
@@ -81,22 +80,19 @@ public:
   // Process next frame of logic.
   void update(float dt);
 	
-	// refresh()
 	// Refresh underlying room.
 	void refresh();
 
-  // draw(window)
   // Draw top state to window.
   void draw(sf::RenderWindow& window) const;
 
 private:
-  // deleteState()
-  // Deletes the state on top of the stack in the case of pop() and
-  // replaceWith(...).
+  // Delete the state on top of the stack.
   void deleteState();
 
   std::stack<GameState*> states_;
   GameState* state_;
+
   bool keep_state_;
 };
 
